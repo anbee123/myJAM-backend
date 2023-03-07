@@ -39,7 +39,25 @@ exports.signup = async (req, res) => {
 
 }
 
-exports.login = (req, res) => {
+exports.login = async (req, res) => {
     console.log('--- login')
+    try {
+        const {email, password} = req.body
+        if (!email || !password) {
+            return res.status(400).send("Wrong input values")
+        }
+
+        const user = await User.findOne({email})
+        if (!user) {
+            return res.status(400).send("Email is not exist")
+        }
+        const isPassordMatch = await bcrypt.compare(password, user.password)
+        if (!isPassordMatch) {
+            return res.status(400).send("Password is not match")
+        }
+        return res.status(200).json(user)
+    } catch(err) {
+        console.log(err)
+    }
     res.status(200).send('This is login api')
 }
