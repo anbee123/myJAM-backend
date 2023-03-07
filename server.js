@@ -17,10 +17,13 @@ app.use(bodyParser.json())
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
 
+
+// define Routes
+const authMiddleware = require('./src/middlewares/auth')
 require('./src/routes/auth.routes')(app)
-app.post('/api/testpost', async (req, res) => {
-  console.log('--- testpost')
-  console.log({reqBody: req})
+
+app.post('/api/testauth', authMiddleware, async (req, res) => {
+  console.log('--- testauth')
   try {
     const {username, email, password} = req.body
     console.log({username, email, password})
