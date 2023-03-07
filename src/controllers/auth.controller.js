@@ -1,9 +1,9 @@
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 
 exports.signup = async (req, res) => {
     console.log('--- signup')
-    console.log({reqBody: req})
 
     try {
         const {username, email, password} = req.body
@@ -25,7 +25,12 @@ exports.signup = async (req, res) => {
             password: encryptPassword,
         })
 
-
+        const token = jwt.sign(
+            { user_id: user._id, email },
+            process.env.TOKEN_KEY,
+            { expiresIn: '2h' }
+        )
+        user.token = token
 
         res.status(200).json(user)
     } catch (err) {
