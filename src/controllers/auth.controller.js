@@ -55,6 +55,12 @@ exports.login = async (req, res) => {
         if (!isPassordMatch) {
             return res.status(400).send("Password is not match")
         }
+        const token = jwt.sign(
+            { user_id: user._id, email },
+            process.env.TOKEN_KEY,
+            { expiresIn: '2h' }
+        )
+        user.token = token
         return res.status(200).json(user)
     } catch(err) {
         console.log(err)
