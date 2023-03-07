@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs')
 const User = require('../models/user')
 
 exports.signup = async (req, res) => {
@@ -17,11 +18,14 @@ exports.signup = async (req, res) => {
             return res.status(400).send('Email is already exist')
         }
 
+        const encryptPassword = await bcrypt.hash(password, 10)
         const user = await User.create({
             username,
             email,
-            password,
+            password: encryptPassword,
         })
+
+
 
         res.status(200).json(user)
     } catch (err) {
