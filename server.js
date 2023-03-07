@@ -11,6 +11,9 @@ dbConfig.connectdb()
 const cors = require('cors')
 app.use(cors())
 
+require('./src/routes/auth.routes')(app)
+
+
 // simple api to test
 app.get('/api/test', async (req, res) => {
   try {
