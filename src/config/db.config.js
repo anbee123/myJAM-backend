@@ -1,11 +1,12 @@
 const mongoose = require('mongoose')
-const MONGODB_URI = ''
-exports.connect = () => {
-    mongoose.connect(MONGODB_URI)
-        .then(() => {
-            console.log('Connected to MongoDB')
-        })
-        .catch(err => {
-            console.log('Could not connect to MongoDB')
-        })
+const { DATABASE_URL } = process.env;
+exports.connectdb = () => {
+
+    // // DATABASE CONNECTION
+    mongoose.connect(DATABASE_URL);
+    // Connection Events
+    mongoose.connection
+    .on("open", () => console.log("You are connected to MongoDB"))
+    .on("close", () => console.log("You are disconnected from MongoDB"))
+    .on("error", (error) => console.log(error));
 }
