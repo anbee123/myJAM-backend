@@ -40,7 +40,7 @@ app.get('/api/test', async (req, res) => {
   try {
     res.status(200).json('This is test api');
   } catch (error) {
-    res.status(400).json(error);
+    res.status(400).send('Wrong parameters');
   }
 })
 

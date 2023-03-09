@@ -42,21 +42,21 @@ exports.signup = async (req, res) => {
 exports.login = async (req, res) => {
     console.log('--- login')
     try {
-        const {email, password} = req.body
-        if (!email || !password) {
+        const {username, password} = req.body
+        if (!username || !password) {
             return res.status(400).send("Wrong input values")
         }
 
-        const user = await User.findOne({email})
+        const user = await User.findOne({username})
         if (!user) {
-            return res.status(400).send("Email is not exist")
+            return res.status(400).send("User is not exist")
         }
         const isPassordMatch = await bcrypt.compare(password, user.password)
         if (!isPassordMatch) {
             return res.status(400).send("Password is not match")
         }
         const token = jwt.sign(
-            { user_id: user._id, email },
+            { user_id: user._id, email: user.email },
             process.env.TOKEN_KEY,
             { expiresIn: '2h' }
         )
