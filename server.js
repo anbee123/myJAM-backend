@@ -35,6 +35,11 @@ app.post('/api/testauth', authMiddleware, async (req, res) => {
 
 })
 
+
+app.get("/", (req, res) => {
+  res.send("hello world");
+});
+
 // simple api to test
 app.get('/api/test', async (req, res) => {
   try {
